@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ title }} Listings</h2>
+
+    {% for auction in data %}
+    <div onclick="window.location.href='/listings/{{auction.id}}'" class="entry-content">
+        <div>{{ auction.id }}</div>
+        <div>{{ auction.name }}</div>
+        <!-- <div>{{ auction.imgURL }}</div> -->
+        <img src="{{ auction.imgURL }}" style="width: 25%;"/>
+        <div>{{ auction.detail }}</div>
+        <div>{{ auction.starting }}</div>
+    </div>
+    {% endfor %}
+{% endblock %}

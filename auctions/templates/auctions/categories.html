@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{data.name}}</h2>
+    <!-- <div>{{ data.imgURL }}</div> -->
+    <img src="{{ data.imgURL }}" style="width: 25%;"/>
+    <div>{{ data.detail }}</div>
+    <div>{{ data.starting }}</div>
+    {% if isNewOwner %}
+    <h3>You win this auctions !!!</h3>
+    {% else %}
+    <form action="/listings/{{data.id}}/" method="post">
+        {% csrf_token %}
+        <label for="price">price</label>
+        <input type="number" min={{minPrice}} name="price" required id="price"/>
+        <p></p>
+        <input value="Place Bid" type="submit"/>
+    </form>
+    <p></p>
+
+    {% if watched %}
+    <form action="/deletewatch/{{ data.id }}">
+        <input type="submit" value="delete from Watchlist" />
+    </form>
+    {% else %}
+
+    <form action="/addwatch/{{ data.id }}">
+        <input type="submit" value="add to Watchlist" />
+    </form>
+    {% endif %}
+
+    {% if isAuthor %}
+    <p></p>
+    <form action="/close/{{ data.id }}">
+        <input type="submit" value="close this auction" />
+    </form>
+    {% endif %}
+    {% endif %}
+    <form action="/comment/{{ data.id }}/" method="post">
+        {% csrf_token %}
+        <label for="comment">comment here</label><br>
+        <input type="text" name="comment" required id="comment"/>
+        <input type="submit" value="comment" />
+    </form>
+
+    {% for comment in comments %}
+    <h5>{{ comment.uid.username }}</h5>
+    <p>{{ comment.comment }}</p>
+    {% endfor %}
+
+{% endblock %}
